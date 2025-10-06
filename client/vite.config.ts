@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -13,6 +12,6 @@ export default defineConfig({
     sourcemap: false,
     emptyOutDir: true
   },
-  // Важно для деплоя
+  // Важно для SPA роутинга на Render
   base: './',
 })
