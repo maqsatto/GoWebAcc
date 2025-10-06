@@ -1,9 +1,9 @@
-FROM golang:1.19-alpine
+FROM golang:1.25.1-alpine
 
 WORKDIR /app
 
 # Устанавливаем зависимости для postgres
-RUN apk add --no-cache gcc musl-dev
+RUN apk add --no-cache gcc musl-dev postgresql-dev
 
 # Копируем файлы зависимостей
 COPY go.mod go.sum ./
