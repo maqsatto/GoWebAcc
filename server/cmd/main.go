@@ -57,5 +57,8 @@ func main() {
 	r.GET("/health", healthCheck)
 
 	logger.Log.Info("Server starting on :8080")
-	r.Run(":8080")
+	cfg := config.Load()
+
+	logger.Log.Info("Server starting on :" + cfg.ServerPort)
+	r.Run(":" + cfg.ServerPort) // Добавляем двоеточие
 }

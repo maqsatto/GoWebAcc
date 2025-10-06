@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: finance-frontend
+    plan: free
+    buildCommand: npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://finance-backend.onrender.com

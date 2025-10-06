@@ -39,11 +39,19 @@ func AuthMiddleware() gin.HandlerFunc {
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.Request.Header.Get("Origin")
-		if origin == "" {
-			origin = "http://localhost:5173"
+		allowedOrigins := []string{
+			"http://localhost:5173",
+			"https://your-frontend-domain.vercel.app",
+			"https://your-frontend-domain.onrender.com",
 		}
 
-		c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
+		for _, allowedOrigin := range allowedOrigins {
+			if origin == allowedOrigin {
+				c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
+				break
+			}
+		}
+
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
