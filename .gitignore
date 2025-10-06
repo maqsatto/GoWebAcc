@@ -1,0 +1,25 @@
+# Frontend
+client/node_modules/
+client/dist/
+client/.env
+client/.env.local
+client/.env.*.local
+client/*.log
+client/.vscode/
+client/.idea/
+
+# Backend
+server/bin/
+server/tmp/
+server/*.log
+server/.env
+server/.vscode/
+server/.idea/
+
+# General
+.DS_Store
+*.log
+.env
+.env.local
+.idea/
+.vscode/

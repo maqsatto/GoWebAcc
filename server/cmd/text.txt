@@ -1,0 +1,889 @@
+package main
+
+import (
+	"accountantapp/go-service/internal/database"
+	"accountantapp/go-service/internal/routes"
+
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	database.Connect()
+
+	r := gin.Default()
+
+	routes.RegisterUserRoutes(r)
+	routes.RegisterAccountRoutes(r)
+	routes.RegisterTransactionRoutes(r)
+	routes.RegisterCategoryRoutes(r)
+	routes.RegisterTemplateRoutes(r)
+	routes.RegisterSettingsRoutes(r)
+
+	r.Run(":8080")
+}
+
+package config
+
+package controllers
+
+import (
+	"accountantapp/go-service/internal/models"
+	"accountantapp/go-service/internal/services"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+func CreateAccount(c *gin.Context) {
+	var input models.Account
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	account, _ := services.CreateAccountService(&input)
+	c.JSON(http.StatusCreated, account)
+}
+
+func GetAllAccounts(c *gin.Context) {
+	accounts, _ := services.GetAllAccountsService()
+	c.JSON(http.StatusOK, accounts)
+}
+
+func GetAccountByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	account, _ := services.GetAccountByIDService(id)
+	c.JSON(http.StatusOK, account)
+}
+
+func UpdateAccount(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var input models.Account
+	c.ShouldBindJSON(&input)
+	account, _ := services.UpdateAccountService(id, &input)
+	c.JSON(http.StatusOK, account)
+}
+
+func DeleteAccount(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	_ = services.DeleteAccountService(id)
+	c.JSON(http.StatusOK, gin.H{"message": "Account deleted"})
+}
+
+package controllers
+
+import (
+	"accountantapp/go-service/internal/models"
+	"accountantapp/go-service/internal/services"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+func CreateCategory(c *gin.Context) {
+	var input models.Category
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	cat, _ := services.CreateCategoryService(&input)
+	c.JSON(http.StatusCreated, cat)
+}
+
+func GetAllCategories(c *gin.Context) {
+	cats, _ := services.GetAllCategoriesService()
+	c.JSON(http.StatusOK, cats)
+}
+
+func GetCategoryByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	cat, _ := services.GetCategoryByIDService(id)
+	c.JSON(http.StatusOK, cat)
+}
+
+func UpdateCategory(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var input models.Category
+	c.ShouldBindJSON(&input)
+	cat, _ := services.UpdateCategoryService(id, &input)
+	c.JSON(http.StatusOK, cat)
+}
+
+func DeleteCategory(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	_ = services.DeleteCategoryService(id)
+	c.JSON(http.StatusOK, gin.H{"message": "Category deleted"})
+}
+
+package controllers
+
+import (
+	"accountantapp/go-service/internal/models"
+	"accountantapp/go-service/internal/services"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+func CreateSetting(c *gin.Context) {
+	var input models.AppSettings
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	setting, _ := services.CreateSettingService(&input)
+	c.JSON(http.StatusCreated, setting)
+}
+
+func GetAllSettings(c *gin.Context) {
+	settings, _ := services.GetAllSettingsService()
+	c.JSON(http.StatusOK, settings)
+}
+
+func GetSettingByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	setting, _ := services.GetSettingByIDService(id)
+	c.JSON(http.StatusOK, setting)
+}
+
+func UpdateSetting(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var input models.AppSettings
+	c.ShouldBindJSON(&input)
+	setting, _ := services.UpdateSettingService(id, &input)
+	c.JSON(http.StatusOK, setting)
+}
+
+func DeleteSetting(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	_ = services.DeleteSettingService(id)
+	c.JSON(http.StatusOK, gin.H{"message": "Setting deleted"})
+}
+
+package controllers
+
+import (
+	"accountantapp/go-service/internal/models"
+	"accountantapp/go-service/internal/services"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+func CreateTemplate(c *gin.Context) {
+	var input models.Template
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	tmpl, _ := services.CreateTemplateService(&input)
+	c.JSON(http.StatusCreated, tmpl)
+}
+
+func GetAllTemplates(c *gin.Context) {
+	tmpls, _ := services.GetAllTemplatesService()
+	c.JSON(http.StatusOK, tmpls)
+}
+
+func GetTemplateByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	tmpl, _ := services.GetTemplateByIDService(id)
+	c.JSON(http.StatusOK, tmpl)
+}
+
+func UpdateTemplate(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var input models.Template
+	c.ShouldBindJSON(&input)
+	tmpl, _ := services.UpdateTemplateService(id, &input)
+	c.JSON(http.StatusOK, tmpl)
+}
+
+func DeleteTemplate(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	_ = services.DeleteTemplateService(id)
+	c.JSON(http.StatusOK, gin.H{"message": "Template deleted"})
+}
+
+package controllers
+
+import (
+	"accountantapp/go-service/internal/models"
+	"accountantapp/go-service/internal/services"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+func CreateTransaction(c *gin.Context) {
+	var input models.Transaction
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	tx, err := services.CreateTransaction(&input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, tx)
+}
+
+func GetAllTransactions(c *gin.Context) {
+	txs, err := services.GetAllTransactionsService()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, txs)
+}
+
+func GetTransactionByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	tx, err := services.GetTransactionByIDService(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, tx)
+}
+
+func UpdateTransaction(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var input models.Transaction
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	tx, err := services.UpdateTransaction(id, &input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, tx)
+}
+
+func DeleteTransaction(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	if err := services.DeleteTransaction(id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Transaction deleted"})
+}
+
+package controllers
+
+import (
+	"accountantapp/go-service/internal/models"
+	"accountantapp/go-service/internal/services"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+func CreateUser(c *gin.Context) {
+	var input models.User
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	input.Accounts = []models.Account{}
+	input.Transactions = []models.Transaction{}
+	input.Categories = []models.Category{}
+	input.Templates = []models.Template{}
+	input.Settings = []models.AppSettings{}
+
+	user, err := services.CreateUserService(&input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, user)
+}
+
+func GetAllUsers(c *gin.Context) {
+	users, _ := services.GetAllUsersService()
+	c.JSON(http.StatusOK, users)
+}
+
+func GetUserByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	user, err := services.GetUserByIDService(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+	c.JSON(http.StatusOK, user)
+}
+
+func UpdateUser(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var input models.User
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	user, err := services.UpdateUserService(id, &input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
+		return
+	}
+	c.JSON(http.StatusOK, user)
+}
+
+func DeleteUser(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	_ = services.DeleteUserService(id)
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
+}
+
+package database
+
+import (
+	"fmt"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+
+	"accountantapp/go-service/internal/models"
+)
+
+var DB *gorm.DB
+
+func Connect() {
+	// Настройка подключения к PostgreSQL
+	dsn := "host=localhost user=postgres password=0000 dbname=accountant port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("Failed to connect to database!")
+	}
+
+	// Авто-миграция моделей
+	err = db.AutoMigrate(
+		&models.User{},
+		&models.Account{},
+		&models.Transaction{},
+		&models.Category{},
+		&models.Template{},
+		&models.AppSettings{},
+	)
+	if err != nil {
+		panic("Failed to auto-migrate models!")
+	}
+
+	DB = db
+	fmt.Println("Database connected and migrated")
+}
+
+package models
+
+import "time"
+
+type Account struct {
+	ID           uint          `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID       uint          `gorm:"not null" json:"user_id"`
+	Name         string        `gorm:"type:varchar(100);not null" json:"name"`
+	Balance      float64       `gorm:"type:numeric;default:0" json:"balance"`
+	Currency     string        `gorm:"type:varchar(10);default:'USD'" json:"currency"`
+	CreatedAt    time.Time     `json:"created_at"`
+	Transactions []Transaction `gorm:"foreignKey:AccountID" json:"transactions"`
+}
+
+package models
+
+type AppSettings struct {
+	ID     uint   `gorm:"primaryKey" json:"id"`
+	UserID uint   `json:"user_id"`
+	Key    string `gorm:"type:varchar(100)" json:"key"`
+	Value  string `gorm:"type:varchar(255)" json:"value"`
+}
+
+package models
+
+import "time"
+
+type Category struct {
+	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID    uint      `gorm:"not null" json:"user_id"`
+	Name      string    `gorm:"type:varchar(100);not null" json:"name"`
+	Type      string    `gorm:"type:varchar(50);not null" json:"type"` // income or expense
+	CreatedAt time.Time `json:"created_at"`
+}
+
+package models
+
+import "time"
+
+type Template struct {
+	ID          uint      `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID      uint      `gorm:"not null" json:"user_id"`
+	Name        string    `gorm:"type:varchar(100);not null" json:"name"`
+	Description string    `gorm:"type:varchar(255)" json:"description"`
+	Amount      float64   `gorm:"type:numeric;not null" json:"amount"`
+	CategoryID  uint      `json:"category_id"`
+	AccountID   uint      `json:"account_id"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+package models
+
+import "time"
+
+type Transaction struct {
+	ID          uint      `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID      uint      `gorm:"not null" json:"user_id"`
+	AccountID   uint      `gorm:"not null" json:"account_id"`
+	Amount      float64   `gorm:"type:numeric;not null" json:"amount"`
+	Description string    `gorm:"type:varchar(255)" json:"description"`
+	CategoryID  uint      `json:"category_id"`
+	Date        time.Time `gorm:"not null" json:"date"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+package models
+
+import "time"
+
+type User struct {
+	ID           uint          `gorm:"primaryKey;autoIncrement" json:"id"`
+	Name         string        `gorm:"type:varchar(100);not null" json:"name"`
+	Email        string        `gorm:"uniqueIndex;type:varchar(100);not null" json:"email"`
+	Password     string        `gorm:"type:varchar(255);not null" json:"password"`
+	CreatedAt    time.Time     `json:"created_at"`
+	Accounts     []Account     `gorm:"foreignKey:UserID" json:"accounts"`
+	Transactions []Transaction `gorm:"foreignKey:UserID" json:"transactions"`
+	Categories   []Category    `gorm:"foreignKey:UserID" json:"categories"`
+	Templates    []Template    `gorm:"foreignKey:UserID" json:"templates"`
+	Settings     []AppSettings `gorm:"foreignKey:UserID" json:"settings"`
+}
+
+package routes
+
+import (
+	"accountantapp/go-service/internal/controllers"
+
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterAccountRoutes(r *gin.Engine) {
+	accounts := r.Group("/accounts")
+	{
+		accounts.POST("/", controllers.CreateAccount)
+		accounts.GET("/", controllers.GetAllAccounts)
+		accounts.GET("/:id", controllers.GetAccountByID)
+		accounts.PUT("/:id", controllers.UpdateAccount)
+		accounts.DELETE("/:id", controllers.DeleteAccount)
+	}
+}
+
+package routes
+
+import (
+	"accountantapp/go-service/internal/controllers"
+
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterCategoryRoutes(r *gin.Engine) {
+	cats := r.Group("/categories")
+	{
+		cats.POST("/", controllers.CreateCategory)
+		cats.GET("/", controllers.GetAllCategories)
+		cats.GET("/:id", controllers.GetCategoryByID)
+		cats.PUT("/:id", controllers.UpdateCategory)
+		cats.DELETE("/:id", controllers.DeleteCategory)
+	}
+}
+
+package routes
+
+import (
+	"accountantapp/go-service/internal/controllers"
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterSettingsRoutes(r *gin.Engine) {
+	settings := r.Group("/settings")
+	{
+		settings.POST("/", controllers.CreateSetting)
+		settings.GET("/", controllers.GetAllSettings)
+		settings.GET("/:id", controllers.GetSettingByID)
+		settings.PUT("/:id", controllers.UpdateSetting)
+		settings.DELETE("/:id", controllers.DeleteSetting)
+	}
+}
+
+package routes
+
+import (
+	"accountantapp/go-service/internal/controllers"
+
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterTemplateRoutes(r *gin.Engine) {
+	tmpls := r.Group("/templates")
+	{
+		tmpls.POST("/", controllers.CreateTemplate)
+		tmpls.GET("/", controllers.GetAllTemplates)
+		tmpls.GET("/:id", controllers.GetTemplateByID)
+		tmpls.PUT("/:id", controllers.UpdateTemplate)
+		tmpls.DELETE("/:id", controllers.DeleteTemplate)
+	}
+}
+
+package routes
+
+import (
+	"accountantapp/go-service/internal/controllers"
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterTransactionRoutes(r *gin.Engine) {
+	txs := r.Group("/transactions")
+	{
+		txs.POST("/", controllers.CreateTransaction)
+		txs.GET("/", controllers.GetAllTransactions)
+		txs.GET("/:id", controllers.GetTransactionByID)
+		txs.PUT("/:id", controllers.UpdateTransaction)
+		txs.DELETE("/:id", controllers.DeleteTransaction)
+	}
+}
+
+package routes
+
+import (
+	"accountantapp/go-service/internal/controllers"
+
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterUserRoutes(r *gin.Engine) {
+	users := r.Group("/users")
+	{
+		users.POST("/", controllers.CreateUser)
+		users.GET("/", controllers.GetAllUsers)
+		users.GET("/:id", controllers.GetUserByID)
+		users.PUT("/:id", controllers.UpdateUser)
+		users.DELETE("/:id", controllers.DeleteUser)
+	}
+}
+
+package services
+
+import (
+	"accountantapp/go-service/internal/database"
+	"accountantapp/go-service/internal/models"
+)
+
+func CreateAccountService(acc *models.Account) (*models.Account, error) {
+	database.DB.Create(acc)
+	return acc, nil
+}
+
+func GetAllAccountsService() ([]models.Account, error) {
+	var accounts []models.Account
+	database.DB.Find(&accounts)
+	return accounts, nil
+}
+
+func GetAccountByIDService(id int) (*models.Account, error) {
+	var acc models.Account
+	database.DB.First(&acc, id)
+	return &acc, nil
+}
+
+func UpdateAccountService(id int, input *models.Account) (*models.Account, error) {
+	var acc models.Account
+	database.DB.First(&acc, id)
+	acc.Name = input.Name
+	acc.Balance = input.Balance
+	database.DB.Save(&acc)
+	return &acc, nil
+}
+
+func DeleteAccountService(id int) error {
+	return database.DB.Delete(&models.Account{}, id).Error
+}
+
+package services
+
+import (
+	"accountantapp/go-service/internal/database"
+	"accountantapp/go-service/internal/models"
+)
+
+func CreateCategoryService(cat *models.Category) (*models.Category, error) {
+	database.DB.Create(cat)
+	return cat, nil
+}
+
+func GetAllCategoriesService() ([]models.Category, error) {
+	var cats []models.Category
+	database.DB.Find(&cats)
+	return cats, nil
+}
+
+func GetCategoryByIDService(id int) (*models.Category, error) {
+	var cat models.Category
+	database.DB.First(&cat, id)
+	return &cat, nil
+}
+
+func UpdateCategoryService(id int, input *models.Category) (*models.Category, error) {
+	var cat models.Category
+	database.DB.First(&cat, id)
+	cat.Name = input.Name
+	database.DB.Save(&cat)
+	return &cat, nil
+}
+
+func DeleteCategoryService(id int) error {
+	return database.DB.Delete(&models.Category{}, id).Error
+}
+
+package services
+
+import (
+	"accountantapp/go-service/internal/database"
+	"accountantapp/go-service/internal/models"
+)
+
+func CreateSettingService(s *models.AppSettings) (*models.AppSettings, error) {
+	database.DB.Create(s)
+	return s, nil
+}
+
+func GetAllSettingsService() ([]models.AppSettings, error) {
+	var s []models.AppSettings
+	database.DB.Find(&s)
+	return s, nil
+}
+
+func GetSettingByIDService(id int) (*models.AppSettings, error) {
+	var s models.AppSettings
+	database.DB.First(&s, id)
+	return &s, nil
+}
+
+func UpdateSettingService(id int, input *models.AppSettings) (*models.AppSettings, error) {
+	var s models.AppSettings
+	database.DB.First(&s, id)
+	s.Key = input.Key
+	s.Value = input.Value
+	database.DB.Save(&s)
+	return &s, nil
+}
+
+func DeleteSettingService(id int) error {
+	return database.DB.Delete(&models.AppSettings{}, id).Error
+}
+
+package services
+
+import (
+	"accountantapp/go-service/internal/database"
+	"accountantapp/go-service/internal/models"
+)
+
+func CreateTemplateService(tmpl *models.Template) (*models.Template, error) {
+	database.DB.Create(tmpl)
+	return tmpl, nil
+}
+
+func GetAllTemplatesService() ([]models.Template, error) {
+	var tmpls []models.Template
+	database.DB.Find(&tmpls)
+	return tmpls, nil
+}
+
+func GetTemplateByIDService(id int) (*models.Template, error) {
+	var tmpl models.Template
+	database.DB.First(&tmpl, id)
+	return &tmpl, nil
+}
+
+func UpdateTemplateService(id int, input *models.Template) (*models.Template, error) {
+	var tmpl models.Template
+	database.DB.First(&tmpl, id)
+	tmpl.Name = input.Name
+	tmpl.Amount = input.Amount
+	tmpl.CategoryID = input.CategoryID
+	database.DB.Save(&tmpl)
+	return &tmpl, nil
+}
+
+func DeleteTemplateService(id int) error {
+	return database.DB.Delete(&models.Template{}, id).Error
+}
+
+package services
+
+import (
+	"accountantapp/go-service/internal/database"
+	"accountantapp/go-service/internal/models"
+	"errors"
+	"time"
+)
+
+func CreateTransaction(tx *models.Transaction) (*models.Transaction, error) {
+	var account models.Account
+	if err := database.DB.First(&account, tx.AccountID).Error; err != nil {
+		return nil, errors.New("account not found")
+	}
+
+	if tx.Date.IsZero() {
+		tx.Date = time.Now()
+	}
+
+	if err := database.DB.Create(tx).Error; err != nil {
+		return nil, err
+	}
+
+	account.Balance += tx.Amount
+	if err := database.DB.Save(&account).Error; err != nil {
+		return nil, err
+	}
+
+	return tx, nil
+}
+
+func UpdateTransaction(id int, input *models.Transaction) (*models.Transaction, error) {
+	var tx models.Transaction
+	if err := database.DB.First(&tx, id).Error; err != nil {
+		return nil, errors.New("transaction not found")
+	}
+
+	var account models.Account
+	if err := database.DB.First(&account, tx.AccountID).Error; err != nil {
+		return nil, errors.New("account not found")
+	}
+
+	account.Balance -= tx.Amount
+
+	tx.Amount = input.Amount
+	tx.Description = input.Description
+	tx.CategoryID = input.CategoryID
+	tx.AccountID = input.AccountID
+	tx.Date = input.Date
+	if tx.Date.IsZero() {
+		tx.Date = time.Now()
+	}
+
+	if err := database.DB.Save(&tx).Error; err != nil {
+		return nil, err
+	}
+
+	var newAccount models.Account
+	if err := database.DB.First(&newAccount, tx.AccountID).Error; err != nil {
+		return nil, errors.New("account not found")
+	}
+	newAccount.Balance += tx.Amount
+	if err := database.DB.Save(&newAccount).Error; err != nil {
+		return nil, err
+	}
+
+	return &tx, nil
+}
+
+func GetAllTransactionsService() ([]models.Transaction, error) {
+	var txs []models.Transaction
+	if err := database.DB.Find(&txs).Error; err != nil {
+		return nil, err
+	}
+	return txs, nil
+}
+
+func GetTransactionByIDService(id int) (*models.Transaction, error) {
+	var tx models.Transaction
+	if err := database.DB.First(&tx, id).Error; err != nil {
+		return nil, errors.New("transaction not found")
+	}
+	return &tx, nil
+}
+
+func DeleteTransaction(id int) error {
+	var tx models.Transaction
+	if err := database.DB.First(&tx, id).Error; err != nil {
+		return errors.New("transaction not found")
+	}
+
+	var account models.Account
+	if err := database.DB.First(&account, tx.AccountID).Error; err != nil {
+		return errors.New("account not found")
+	}
+
+	account.Balance -= tx.Amount
+	if err := database.DB.Save(&account).Error; err != nil {
+		return err
+	}
+
+	if err := database.DB.Delete(&tx).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+package services
+
+import (
+	"accountantapp/go-service/internal/database"
+	"accountantapp/go-service/internal/models"
+	"fmt"
+)
+
+func CreateUserService(input *models.User) (*models.User, error) {
+	var existing models.User
+
+	if err := database.DB.Where("email = ?", input.Email).First(&existing).Error; err == nil {
+		return nil, fmt.Errorf("user with email %s already exists", input.Email)
+	}
+
+	if err := database.DB.Create(input).Error; err != nil {
+		return nil, err
+	}
+
+	return input, nil
+}
+
+func GetAllUsersService() ([]models.User, error) {
+	var users []models.User
+	database.DB.Find(&users)
+	return users, nil
+}
+
+func GetUserByIDService(id int) (*models.User, error) {
+	var user models.User
+	if err := database.DB.First(&user, id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func UpdateUserService(id int, input *models.User) (*models.User, error) {
+	var user models.User
+	database.DB.First(&user, id)
+	user.Name = input.Name
+	user.Email = input.Email
+	user.Password = input.Password
+	database.DB.Save(&user)
+	return &user, nil
+}
+
+func DeleteUserService(id int) error {
+	return database.DB.Delete(&models.User{}, id).Error
+}
